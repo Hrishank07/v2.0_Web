@@ -6,7 +6,11 @@ import { AboutSection } from '@/components/about-section'
 import { ProjectsSection } from '@/components/projects-section'
 import { ContactSection } from '@/components/contact-section'
 import { Footer } from '@/components/footer'
-import { ThreeBackground } from '@/components/three-background'
+import dynamic from 'next/dynamic'
+
+const ThreeBackground = dynamic(() => import('@/components/three-background').then(mod => mod.ThreeBackground), {
+  ssr: false,
+})
 
 export default function Home() {
   return (

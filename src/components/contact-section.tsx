@@ -18,7 +18,7 @@ export function ContactSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSending(true)
-    
+
     // Simulate terminal output
     const outputs = [
       '> Initializing secure connection...',
@@ -36,7 +36,7 @@ export function ContactSection() {
     setIsSending(false)
     setShowSuccess(true)
     setFormData({ name: '', email: '', message: '' })
-    
+
     setTimeout(() => {
       setShowSuccess(false)
       setCommandOutput([])
@@ -84,7 +84,7 @@ export function ContactSection() {
                   hrishank@portfolio:~$
                 </span>
               </div>
-              
+
               {/* System Status Indicators */}
               <div className="flex items-center gap-3">
                 <motion.div
@@ -107,9 +107,9 @@ export function ContactSection() {
             </div>
 
             {/* Terminal Body */}
-            <div className="p-6 bg-background">
+            <div className="p-4 md:p-6 bg-background">
               {/* Welcome Message */}
-              <div className="mb-6 font-mono text-sm">
+              <div className="mb-6 font-mono text-xs md:text-sm">
                 <p className="text-accent-primary">$</p>
                 <p className="text-muted-foreground ml-4">
                   Welcome to the contact terminal. Please enter your message below.
@@ -164,7 +164,7 @@ export function ContactSection() {
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     placeholder='"Your message here..."'
                     rows={4}
-                    className="w-full rounded-lg border border-border bg-muted/30 px-4 py-3 font-mono text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent transition-all resize-none"
+                    className="w-full rounded-lg border border-border bg-muted/30 px-3 md:px-4 py-3 font-mono text-xs md:text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent transition-all resize-none"
                   />
                 </div>
 
@@ -208,11 +208,11 @@ export function ContactSection() {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1 }}
                         className={
-                          line.includes('✓') 
-                            ? 'text-green-500' 
-                            : line.includes('>') 
-                            ? 'text-accent-primary' 
-                            : 'text-muted-foreground'
+                          line.includes('✓')
+                            ? 'text-green-500'
+                            : line.includes('>')
+                              ? 'text-accent-primary'
+                              : 'text-muted-foreground'
                         }
                       >
                         {line}

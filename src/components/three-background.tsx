@@ -25,6 +25,7 @@ export function ThreeBackground() {
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
 
     renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     container.appendChild(renderer.domElement)
 
     // Create falling geometric shapes (hexagons using cylinder)
@@ -38,8 +39,8 @@ export function ThreeBackground() {
     materialRef.current = material
 
     const shapes: THREE.Mesh[] = []
-    const shapeData: { 
-      speed: number; 
+    const shapeData: {
+      speed: number;
       rotationSpeed: number;
       bridgePath: THREE.Vector3;
       pathProgress: number;
@@ -58,21 +59,22 @@ export function ThreeBackground() {
       bridgePath.push(new THREE.Vector3(x, y, z))
     }
 
-    const shapeCount = 60
+    const shapeCount = window.innerWidth < 768 ? 25 : 60
+    const bridgeSegments = window.innerWidth < 768 ? 50 : 100
 
     for (let i = 0; i < shapeCount; i++) {
       const shape = new THREE.Mesh(geometry, material.clone())
-      
+
       // Assign each hexagon to a random point on the bridge path
-      const pathIndex = Math.floor(Math.random() * pathSegments)
-      const pathPoint = bridgePath[pathIndex].clone()
-      
+      const pathIndex = Math.floor(Math.random() * bridgeSegments)
+      const pathPoint = bridgePath[Math.floor((pathIndex / bridgeSegments) * pathSegments)].clone()
+
       // Add some randomness around the path
       const spread = 1.5
       shape.position.x = pathPoint.x + (Math.random() - 0.5) * spread
       shape.position.y = pathPoint.y + (Math.random() - 0.5) * spread
       shape.position.z = pathPoint.z + (Math.random() - 0.5) * spread
-      
+
       shape.rotation.x = Math.random() * Math.PI
       shape.rotation.z = Math.random() * (Math.PI / 3)
 
@@ -119,7 +121,7 @@ export function ThreeBackground() {
         // Reset position when out of view
         if (shape.position.y < -15) {
           shape.position.y = 12 + Math.random() * 5
-          
+
           // Re-assign to a new random path point
           const newPathIndex = Math.floor(Math.random() * pathSegments)
           const newPathPoint = bridgePath[newPathIndex].clone()
