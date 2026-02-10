@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     type: "website",
   },
   verification: {
-    google: "GOOGLE_SITE_VERIFICATION_ID", // Replace with your actual ID
+    google: "0KSBnChCi9dBPjm7kXBCBPQkXFRsK0liVofcTi_XNr8",
   },
 };
 
