@@ -2,40 +2,69 @@
 
 import { Terminal, Send, Mail, Linkedin, Github, Code2, Wifi, Server, Cpu, Activity, CheckCircle2 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
+
+interface FormData {
+  name: string
+  email: string
+  message: string
+}
 
 export function ContactSection() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  })
+  const [formData, setFormData] = useState<FormData>({ name: '', email: '', message: '' })
   const [isSending, setIsSending] = useState(false)
   const [commandOutput, setCommandOutput] = useState<string[]>([])
-  const [currentLine, setCurrentLine] = useState('')
   const [showSuccess, setShowSuccess] = useState(false)
+
+  const handleInputChange = useCallback((field: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({ ...prev, [field]: e.target.value }))
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsSending(true)
+    if (isSending || showSuccess) return
 
-    // Simulate terminal output
-    const outputs = [
+    setIsSending(true)
+    setCommandOutput([])
+
+    const initialOutputs = [
       '> Initializing secure connection...',
       '> Encrypting data stream...',
-      '> Validating email format...',
-      '> Sending transmission...',
-      '> Message delivered successfully! ✓'
+      '> Validating email format...'
     ]
 
-    for (let i = 0; i < outputs.length; i++) {
+    for (let i = 0; i < initialOutputs.length; i++) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      setCommandOutput(prev => [...prev, initialOutputs[i]])
+    }
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        await new Promise(resolve => setTimeout(resolve, 400))
+        setCommandOutput(prev => [...prev, '> Sending transmission...'])
+        await new Promise(resolve => setTimeout(resolve, 400))
+        setCommandOutput(prev => [...prev, '> Message delivered successfully! ✓'])
+        setShowSuccess(true)
+        setFormData({ name: '', email: '', message: '' })
+      } else {
+        await new Promise(resolve => setTimeout(resolve, 400))
+        setCommandOutput(prev => [...prev, `> Error: ${data.error || 'Failed to send message'} ✗`])
+      }
+    } catch (error) {
       await new Promise(resolve => setTimeout(resolve, 400))
-      setCommandOutput(prev => [...prev, outputs[i]])
+      setCommandOutput(prev => [...prev, '> Network error: Failed to connect to server ✗'])
+      console.error('Contact form error:', error)
     }
 
     setIsSending(false)
-    setShowSuccess(true)
-    setFormData({ name: '', email: '', message: '' })
 
     setTimeout(() => {
       setShowSuccess(false)
@@ -43,10 +72,15 @@ export function ContactSection() {
     }, 4000)
   }
 
+  const getOutputClass = (line: string) => {
+    if (line.includes('✓')) return 'text-green-500'
+    if (line.includes('>') || line.includes('Error') || line.includes('Network')) return 'text-accent-primary'
+    return 'text-muted-foreground'
+  }
+
   return (
     <section id="contact" className="py-16 md:py-24 overflow-hidden">
       <div className="container mx-auto px-5">
-        {/* Section Header */}
         <motion.div
           className="mb-16 text-center"
           initial={{ opacity: 0, y: 20 }}
@@ -57,12 +91,9 @@ export function ContactSection() {
           <span className="inline-block rounded-full bg-accent-primary/10 px-4 py-1.5 text-xs font-mono font-medium text-accent-primary mb-4">
             INITIATE_CONTACT
           </span>
-          <h2 className="font-serif text-4xl font-semibold md:text-5xl">
-            Get In Touch
-          </h2>
+          <h2 className="font-serif text-4xl font-semibold md:text-5xl">Get In Touch</h2>
         </motion.div>
 
-        {/* Terminal Interface */}
         <motion.div
           className="max-w-3xl mx-auto"
           initial={{ opacity: 0, y: 30 }}
@@ -70,9 +101,7 @@ export function ContactSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          {/* Terminal Window */}
           <div className="rounded-2xl border-2 border-border bg-background overflow-hidden shadow-2xl">
-            {/* Terminal Header */}
             <div className="flex items-center justify-between border-b border-border px-4 py-3 bg-muted/30">
               <div className="flex items-center gap-2">
                 <div className="flex gap-1.5">
@@ -80,19 +109,16 @@ export function ContactSection() {
                   <div className="h-3 w-3 rounded-full bg-yellow-500" />
                   <div className="h-3 w-3 rounded-full bg-green-500" />
                 </div>
-                <span className="text-sm font-mono text-muted-foreground">
-                  hrishank@portfolio:~$
-                </span>
+                <span className="text-sm font-mono text-muted-foreground">hrishank@portfolio:~$</span>
               </div>
 
-              {/* System Status Indicators */}
               <div className="flex items-center gap-3">
                 <motion.div
                   animate={{ opacity: [0.5, 1, 0.5] }}
                   transition={{ duration: 2, repeat: Infinity }}
                   className="flex items-center gap-1.5 text-xs text-muted-foreground"
                 >
-                  <Wifi className="h-3.5 w-3.5 text-green-500" />
+                  <Wifi className="h-3.5 w-3.5 text-accent-primary" />
                   <span className="font-mono">ONLINE</span>
                 </motion.div>
                 <motion.div
@@ -100,29 +126,22 @@ export function ContactSection() {
                   transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }}
                   className="flex items-center gap-1.5 text-xs text-muted-foreground"
                 >
-                  <Server className="h-3.5 w-3.5 text-blue-500" />
+                  <Server className="h-3.5 w-3.5 text-accent-primary" />
                   <span className="font-mono">ACTIVE</span>
                 </motion.div>
               </div>
             </div>
 
-            {/* Terminal Body */}
-            <div className="p-4 md:p-6 bg-background">
-              {/* Welcome Message */}
-              <div className="mb-6 font-mono text-xs md:text-sm">
+            <div className="p-6 bg-background">
+              <div className="mb-6 font-mono text-sm">
                 <p className="text-accent-primary">$</p>
-                <p className="text-muted-foreground ml-4">
-                  Welcome to the contact terminal. Please enter your message below.
-                </p>
+                <p className="text-muted-foreground ml-4">Welcome to the contact terminal. Please enter your message below.</p>
                 <p className="text-accent-primary">$</p>
-                <p className="text-muted-foreground ml-4">
-                  <span className="text-yellow-500">Tip:</span> All transmissions are encrypted end-to-end.
-                </p>
+                <p className="text-muted-foreground ml-4"><span className="text-yellow-500">Tip:</span> All transmissions are encrypted end-to-end.</p>
               </div>
 
-              {/* Contact Form */}
               <form onSubmit={handleSubmit} className="space-y-4 mb-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="flex items-center gap-2 text-sm font-mono text-accent-primary">
                       <Code2 className="h-4 w-4" />
@@ -132,9 +151,9 @@ export function ContactSection() {
                       type="text"
                       required
                       value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      onChange={handleInputChange('name')}
                       placeholder='"Your Name"'
-                      className="w-full rounded-lg border border-border bg-muted/30 px-4 py-3 font-mono text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent transition-all"
+                      className="w-full rounded-lg border border-border bg-muted/30 px-3 sm:px-4 py-2.5 sm:py-3 font-mono text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent transition-all"
                     />
                   </div>
                   <div className="space-y-2">
@@ -146,9 +165,9 @@ export function ContactSection() {
                       type="email"
                       required
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onChange={handleInputChange('email')}
                       placeholder='"your@email.com"'
-                      className="w-full rounded-lg border border-border bg-muted/30 px-4 py-3 font-mono text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent transition-all"
+                      className="w-full rounded-lg border border-border bg-muted/30 px-3 sm:px-4 py-2.5 sm:py-3 font-mono text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent transition-all"
                     />
                   </div>
                 </div>
@@ -161,17 +180,17 @@ export function ContactSection() {
                   <textarea
                     required
                     value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    onChange={handleInputChange('message')}
                     placeholder='"Your message here..."'
                     rows={4}
-                    className="w-full rounded-lg border border-border bg-muted/30 px-3 md:px-4 py-3 font-mono text-xs md:text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent transition-all resize-none"
+                    className="w-full rounded-lg border border-border bg-muted/30 px-3 sm:px-4 py-2.5 sm:py-3 font-mono text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent transition-all resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSending || showSuccess}
-                  className="group flex items-center gap-2 rounded-lg bg-accent-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg hover:bg-accent-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="group w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg bg-accent-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg hover:bg-accent-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSending ? (
                     <>
@@ -192,7 +211,6 @@ export function ContactSection() {
                 </button>
               </form>
 
-              {/* Command Output */}
               <AnimatePresence>
                 {commandOutput.length > 0 && (
                   <motion.div
@@ -207,13 +225,7 @@ export function ContactSection() {
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className={
-                          line.includes('✓')
-                            ? 'text-green-500'
-                            : line.includes('>')
-                              ? 'text-accent-primary'
-                              : 'text-muted-foreground'
-                        }
+                        className={getOutputClass(line)}
                       >
                         {line}
                       </motion.p>
@@ -222,17 +234,16 @@ export function ContactSection() {
                 )}
               </AnimatePresence>
 
-              {/* Social Links - Terminal Style */}
               <div className="mt-6 pt-6 border-t border-border">
                 <p className="mb-4 text-sm font-mono text-muted-foreground">
                   <span className="text-accent-primary">$</span> <span className="text-yellow-500">OR</span> connect via:
                 </p>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-3 justify-start sm:justify-center">
                   <a
                     href="https://linkedin.com/in/hrishankk"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-mono text-foreground hover:border-accent-primary hover:text-accent-primary transition-all"
+                    className="flex items-center gap-2 rounded-lg border border-border px-3 sm:px-4 py-2 text-sm font-mono text-foreground hover:border-accent-primary hover:text-accent-primary transition-all"
                   >
                     <Linkedin className="h-4 w-4" />
                     <span>linkedin</span>
@@ -241,14 +252,14 @@ export function ContactSection() {
                     href="https://github.com/hrishankk"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-mono text-foreground hover:border-accent-primary hover:text-accent-primary transition-all"
+                    className="flex items-center gap-2 rounded-lg border border-border px-3 sm:px-4 py-2 text-sm font-mono text-foreground hover:border-accent-primary hover:text-accent-primary transition-all"
                   >
                     <Github className="h-4 w-4" />
                     <span>github</span>
                   </a>
                   <a
                     href="mailto:hchhatba@usc.edu"
-                    className="flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-mono text-foreground hover:border-accent-primary hover:text-accent-primary transition-all"
+                    className="flex items-center gap-2 rounded-lg border border-border px-3 sm:px-4 py-2 text-sm font-mono text-foreground hover:border-accent-primary hover:text-accent-primary transition-all"
                   >
                     <Mail className="h-4 w-4" />
                     <span>email</span>
@@ -256,7 +267,6 @@ export function ContactSection() {
                 </div>
               </div>
 
-              {/* System Info Footer */}
               <div className="mt-4 pt-4 border-t border-border flex items-center justify-between text-xs font-mono text-muted-foreground">
                 <div className="flex items-center gap-3">
                   <span className="flex items-center gap-1">
@@ -273,7 +283,6 @@ export function ContactSection() {
             </div>
           </div>
 
-          {/* Floating Code Particles */}
           <div className="mt-8 grid grid-cols-4 md:grid-cols-8 gap-2 opacity-30">
             {[...Array(32)].map((_, i) => (
               <motion.div
@@ -281,12 +290,7 @@ export function ContactSection() {
                 className="h-2 w-2 rounded-full bg-accent-primary"
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: [0.3, 0.8, 0.3] }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: i * 0.1,
-                  ease: 'easeInOut'
-                }}
+                transition={{ duration: 2, repeat: Infinity, delay: i * 0.1, ease: 'easeInOut' }}
               />
             ))}
           </div>

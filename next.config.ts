@@ -1,12 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
-  /* config options here */
+  reactStrictMode: true,
+  swcMinify: true,
+  images: {
+    unoptimized: true, // Recommended for static exports or simple Netlify setups if not using Next.js Image Optimization service
+  },
   typescript: {
     ignoreBuildErrors: true,
   },
-  reactStrictMode: false,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
+  },
 };
 
 export default nextConfig;

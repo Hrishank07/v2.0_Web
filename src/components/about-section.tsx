@@ -1,6 +1,6 @@
 'use client'
 
-import { Cloud, Code, Database, Brain, Zap, Layers, Award, Briefcase, GraduationCap, Target, CheckCircle2 } from 'lucide-react'
+import { Cloud, Code, Database, Brain, Zap, Award, Briefcase, CheckCircle2 } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 const skills = [
@@ -8,29 +8,29 @@ const skills = [
     icon: Cloud,
     title: 'Cloud Architecture',
     description: 'Scalable, fault-tolerant systems',
-    color: 'from-blue-500/20 to-cyan-500/20',
-    iconColor: 'text-blue-500',
+    color: 'from-accent-primary/20 to-accent-secondary/20',
+    iconColor: 'text-accent-primary',
   },
   {
     icon: Code,
     title: 'Full Stack Development',
     description: 'End-to-end applications with modern frameworks',
-    color: 'from-purple-500/20 to-pink-500/20',
-    iconColor: 'text-purple-500',
+    color: 'from-[#a8b5a7]/20 to-[#8fa392]/20',
+    iconColor: 'text-[#a8b5a7]',
   },
   {
     icon: Database,
     title: 'AWS & Serverless',
     description: 'Cloud solutions improving performance by 35%',
-    color: 'from-orange-500/20 to-red-500/20',
-    iconColor: 'text-orange-500',
+    color: 'from-[#9aad9e]/20 to-[#7a8a7c]/20',
+    iconColor: 'text-[#9aad9e]',
   },
   {
     icon: Brain,
     title: 'AI Integration',
     description: 'GPT-powered applications with vector search',
-    color: 'from-green-500/20 to-emerald-500/20',
-    iconColor: 'text-green-500',
+    color: 'from-[#b8c4bb]/20 to-[#a8b5a7]/20',
+    iconColor: 'text-[#b8c4bb]',
   },
 ]
 

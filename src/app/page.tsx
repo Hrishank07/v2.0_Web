@@ -1,16 +1,12 @@
 'use client'
 
 import { Header } from '@/components/header'
-import { HeroSection } from '@/components/hero-section'
+import { HeroSection } from '@/components/hero'
 import { AboutSection } from '@/components/about-section'
 import { ProjectsSection } from '@/components/projects-section'
 import { ContactSection } from '@/components/contact-section'
 import { Footer } from '@/components/footer'
-import dynamic from 'next/dynamic'
-
-const ThreeBackground = dynamic(() => import('@/components/three-background').then(mod => mod.ThreeBackground), {
-  ssr: false,
-})
+import { ThreeBackground } from '@/components/three-background'
 
 export default function Home() {
   return (

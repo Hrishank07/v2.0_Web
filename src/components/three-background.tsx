@@ -25,7 +25,6 @@ export function ThreeBackground() {
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
 
     renderer.setSize(window.innerWidth, window.innerHeight)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     container.appendChild(renderer.domElement)
 
     // Create falling geometric shapes (hexagons using cylinder)
@@ -47,52 +46,67 @@ export function ThreeBackground() {
       pathIndex: number;
     }[] = []
 
-    // Create a curved bridge path (like Einstein's spacetime bridge)
+    // Create a vertical bridge/tree path (narrow at top, wide at bottom)
     const bridgePath: THREE.Vector3[] = []
     const pathSegments = 100
     for (let i = 0; i <= pathSegments; i++) {
       const t = i / pathSegments
-      // Create a smooth curve from left to right with some height variation
-      const x = (t - 0.5) * 25
-      const y = Math.sin(t * Math.PI * 2) * 2 - 5
-      const z = Math.cos(t * Math.PI * 4) * 2
-      bridgePath.push(new THREE.Vector3(x, y, z))
+
+      // Vertical structure: top to bottom
+      // Top (t=0) is high Y, Bottom (t=1) is low Y
+      const y = 12 - (t * 20) // Top: 12, Bottom: -8
+
+      // Width increases as we go down (tree branches / bridge base)
+      // t=0 (top) → narrow, t=1 (bottom) → wide
+      const spreadMultiplier = 0.5 + (t * t * 2.5) // Expands quadratically
+
+      // Create the vertical bridge/tree shape
+      const x = (t - 0.5) * spreadMultiplier // Expands outward from center
+      const z = Math.cos(t * Math.PI * 2) * 2 // Depth for 3D effect
+      const depth = (t - 0.5) * 2 // Forward/backward depth
+
+      bridgePath.push(new THREE.Vector3(x, y, z + depth))
     }
 
-    const shapeCount = window.innerWidth < 768 ? 25 : 60
-    const bridgeSegments = window.innerWidth < 768 ? 50 : 100
+    // Create falling hexagons (cleaner look with fewer shapes)
+    const shapeCount = 40
 
     for (let i = 0; i < shapeCount; i++) {
       const shape = new THREE.Mesh(geometry, material.clone())
 
-      // Assign each hexagon to a random point on the bridge path
-      const pathIndex = Math.floor(Math.random() * bridgeSegments)
-      const pathPoint = bridgePath[Math.floor((pathIndex / bridgeSegments) * pathSegments)].clone()
+      const pathIndex = Math.floor(Math.random() * pathSegments)
+      const pathPoint = bridgePath[pathIndex].clone()
+      const t = pathIndex / pathSegments
 
-      // Add some randomness around the path
-      const spread = 1.5
-      shape.position.x = pathPoint.x + (Math.random() - 0.5) * spread
-      shape.position.y = pathPoint.y + (Math.random() - 0.5) * spread
-      shape.position.z = pathPoint.z + (Math.random() - 0.5) * spread
+      // Spread increases as we go down (tree branches / bridge base)
+      const spread = 0.3 + (t * t * 2)
+
+      // Distribute hexagons within the vertical V shape
+      const xSpread = (Math.random() - 0.5) * spread * 4
+      const zSpread = (Math.random() - 0.5) * 2
+
+      shape.position.x = pathPoint.x + xSpread
+      shape.position.y = pathPoint.y + (Math.random() - 0.5) * 1.5
+      shape.position.z = pathPoint.z + zSpread
 
       shape.rotation.x = Math.random() * Math.PI
       shape.rotation.z = Math.random() * (Math.PI / 3)
 
       const data = {
-        speed: Math.random() * 0.008 + 0.004,
-        rotationSpeed: Math.random() * 0.008 + 0.003,
+        speed: Math.random() * 0.004 + 0.002, // Slower, gentler movement
+        rotationSpeed: Math.random() * 0.003 + 0.001, // Slower rotation
         bridgePath: pathPoint.clone(),
-        pathProgress: Math.random(), // Random starting position on their assigned path segment
+        pathProgress: Math.random(),
         pathIndex: pathIndex,
       }
       shapeData.push(data)
 
       scene.add(shape)
       shapes.push(shape)
-      shapesRef.current = shapes
     }
+    shapesRef.current = shapes
 
-    camera.position.z = 5
+    camera.position.z = 3 // Start closer (zoomed in on top of tree/bridge)
 
     // Mouse interaction
     let mouseX = 0
@@ -119,15 +133,17 @@ export function ThreeBackground() {
         shape.rotation.y += data.rotationSpeed
 
         // Reset position when out of view
-        if (shape.position.y < -15) {
-          shape.position.y = 12 + Math.random() * 5
-
-          // Re-assign to a new random path point
-          const newPathIndex = Math.floor(Math.random() * pathSegments)
+        if (shape.position.y < -10) {
+          // Reset to near top of vertical structure
+          const newT = Math.random() * 0.3 // Keep mostly at top
+          const newPathIndex = Math.floor(newT * pathSegments)
           const newPathPoint = bridgePath[newPathIndex].clone()
-          const spread = 1.5
-          shape.position.x = newPathPoint.x + (Math.random() - 0.5) * spread
-          shape.position.z = newPathPoint.z + (Math.random() - 0.5) * spread
+
+          shape.position.y = newPathPoint.y + (Math.random() - 0.5) * 2
+          const spread = 0.3 + (newT * newT * 2)
+
+          shape.position.x = newPathPoint.x + (Math.random() - 0.5) * spread * 4
+          shape.position.z = newPathPoint.z + (Math.random() - 0.5) * 2
           data.pathIndex = newPathIndex
           data.pathProgress = Math.random()
         }
@@ -154,18 +170,18 @@ export function ThreeBackground() {
 
     window.addEventListener('resize', handleResize)
 
-    // Handle scroll parallax
+    // Handle scroll parallax - Smoother, more streamlined zoom
     const handleScroll = () => {
-      const aboutSection = document.getElementById('about')
-      if (aboutSection) {
-        const rect = aboutSection.getBoundingClientRect()
-        const windowHeight = window.innerHeight
+      const scrollY = window.scrollY
+      const scrollHeight = document.body.scrollHeight - window.innerHeight
+      const scrollPercent = Math.min(scrollY / scrollHeight, 1)
 
-        if (rect.top < windowHeight && rect.top > -aboutSection.offsetHeight) {
-          const parallaxValue = (windowHeight - rect.top) * 0.01
-          camera.position.z = 5 + parallaxValue
-        }
-      }
+      // Smoother zoom out: z goes from 3 (zoomed in) to 6 (zoomed out)
+      const targetZ = 3 + (scrollPercent * 3)
+      camera.position.z += (targetZ - camera.position.z) * 0.08 // Higher easing for smoother transition
+
+      // Gentler vertical movement
+      camera.position.y += (-scrollPercent * 1 - camera.position.y) * 0.08
     }
 
     window.addEventListener('scroll', handleScroll)
@@ -184,6 +200,7 @@ export function ThreeBackground() {
         shape.geometry.dispose()
       })
       material.dispose()
+      geometry.dispose()
       materialRef.current = null
       renderer.dispose()
       container.removeChild(renderer.domElement)

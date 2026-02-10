@@ -31,24 +31,24 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-transparent transition-all duration-300">
-        <div className="container mx-auto px-5 py-8">
+      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md transition-all duration-300">
+        <div className="container mx-auto px-4 sm:px-5 py-4 sm:py-8">
           <nav className="flex items-center justify-between">
             {/* Logo */}
             <Link
               href="#home"
-              className="font-serif text-2xl font-semibold text-accent-primary transition-colors hover:text-accent-primary/80"
+              className="font-serif text-xl sm:text-2xl font-semibold text-accent-primary transition-colors hover:text-accent-primary/80"
             >
               Hrishank
             </Link>
 
             {/* Desktop Navigation */}
-            <ul className="hidden flex-row items-center gap-10 md:flex">
+            <ul className="hidden md:flex md:flex-row md:items-center md:gap-6 lg:gap-10">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="relative font-medium text-foreground transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-0 after:bg-accent-primary after:transition-all after:duration-300 hover:text-foreground/80 hover:after:w-full dark:hover:text-foreground/80 dark:after:bg-accent-primary"
+                    className="relative font-medium text-sm lg:text-base text-foreground transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-0 after:bg-accent-primary after:transition-all after:duration-300 hover:text-foreground/80 hover:after:w-full dark:hover:text-foreground/80 dark:after:bg-accent-primary"
                   >
                     {link.label}
                   </Link>

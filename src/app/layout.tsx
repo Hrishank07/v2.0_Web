@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
 import { ThemeWrapper } from "@/components/theme-wrapper";
 
 const playfair = Playfair_Display({
@@ -49,7 +48,6 @@ export default function RootLayout({
       >
         <ThemeWrapper>
           {children}
-          <Toaster />
         </ThemeWrapper>
       </body>
     </html>
