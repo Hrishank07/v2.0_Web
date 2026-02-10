@@ -34,6 +34,9 @@ export const metadata: Metadata = {
     description: "Building scalable systems that solve complex challenges",
     type: "website",
   },
+  verification: {
+    google: "GOOGLE_SITE_VERIFICATION_ID", // Replace with your actual ID
+  },
 };
 
 export default function RootLayout({
