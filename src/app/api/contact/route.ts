@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY
-const resend = new Resend(RESEND_API_KEY)
+
+// Initialize Resend safely - if key is missing (like during build), it stays undefined
+// The check inside POST will prevent runtime errors
+const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,11 +21,21 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate email format
+    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
       return NextResponse.json(
         { error: 'Invalid email format' },
         { status: 400 }
+      )
+    }
+
+    // Check if Resend is initialized (API Key present)
+    if (!resend) {
+      console.error('Missing RESEND_API_KEY')
+      return NextResponse.json(
+        { error: 'Server configuration error: Missing API Key' },
+        { status: 500 }
       )
     }
 
