@@ -25,8 +25,9 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Hrishank Chhatbar - Software Engineer",
-  description: "Building scalable systems that solve complex challenges. From architecting AWS Lambda solutions to crafting full-stack applications with modern frameworks.",
+  title: "Hrishank Chhatbar | Software Engineer, Cloud Architect, Full Stack Developer",
+  description:
+    "Portfolio of Hrishank Chhatbar — Software Engineer, Cloud Architect, AWS Specialist, Full Stack Developer experienced in Next.js, React, Serverless & scalable systems.",
   keywords: [
     "Hrishank Chhatbar",
     "Hrishank",
@@ -34,20 +35,25 @@ export const metadata: Metadata = {
     "Hrishank C",
     "Software Engineer",
     "Cloud Architect",
-    "AWS",
-    "Full Stack",
-    "Lambda",
-    "Next.js Developer"
+    "AWS Developer",
+    "Full Stack Developer",
+    "Next.js Portfolio",
+    "React Developer",
+    "Serverless Engineer",
+    "Scalable Systems",
+    "Netlify",
+    "Portfolio Website"
   ],
   authors: [{ name: "Hrishank Chhatbar" }],
   openGraph: {
-    title: "Hrishank Chhatbar - Software Engineer & Cloud Architect",
-    description: "Building scalable systems that solve complex challenges",
-    url: "https://hrishankc.netlify.app",
+    title: "Hrishank Chhatbar — Software Engineer & Cloud Architect",
+    description:
+      "Explore the portfolio of Hrishank Chhatbar — Cloud Architect, AWS Specialist, Full Stack Developer building scalable modern applications.",
+    url: "https://hrishankc.netlify.app/",
     siteName: "Hrishank Chhatbar Portfolio",
     images: [
       {
-        url: "https://hrishankc.netlify.app/og-image.png", // Ensure you have an og-image
+        url: "https://hrishankc.netlify.app/og-image.png",
         width: 1200,
         height: 630,
       },
@@ -58,9 +64,10 @@ export const metadata: Metadata = {
     google: "0KSBnChCi9dBPjm7kXBCBPQkXFRsK0liVofcTi_XNr8",
   },
   alternates: {
-    canonical: "https://hrishankc.netlify.app",
+    canonical: "https://hrishankc.netlify.app/",
   },
 };
+
 
 export default function RootLayout({
   children,
