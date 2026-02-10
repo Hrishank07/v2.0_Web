@@ -31,7 +31,12 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md transition-all duration-300">
+      <header
+        className={`sticky top-0 z-50 transition-all duration-300 ${scrolled
+            ? 'bg-background/80 backdrop-blur-md shadow-sm border-b border-border/40'
+            : 'bg-transparent backdrop-blur-none border-b-transparent'
+          }`}
+      >
         <div className="container mx-auto px-4 sm:px-5 py-4 sm:py-8">
           <nav className="flex items-center justify-between">
             {/* Logo */}
