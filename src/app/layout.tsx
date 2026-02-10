@@ -27,15 +27,38 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Hrishank Chhatbar - Software Engineer",
   description: "Building scalable systems that solve complex challenges. From architecting AWS Lambda solutions to crafting full-stack applications with modern frameworks.",
-  keywords: ["Hrishank Chhatbar", "Software Engineer", "Cloud Architect", "AWS", "Full Stack", "Lambda"],
+  keywords: [
+    "Hrishank Chhatbar",
+    "Hrishank",
+    "Hrishankk",
+    "Hrishank C",
+    "Software Engineer",
+    "Cloud Architect",
+    "AWS",
+    "Full Stack",
+    "Lambda",
+    "Next.js Developer"
+  ],
   authors: [{ name: "Hrishank Chhatbar" }],
   openGraph: {
     title: "Hrishank Chhatbar - Software Engineer & Cloud Architect",
     description: "Building scalable systems that solve complex challenges",
+    url: "https://hrishank.dev",
+    siteName: "Hrishank Chhatbar Portfolio",
+    images: [
+      {
+        url: "https://hrishank.dev/og-image.png", // Ensure you have an og-image
+        width: 1200,
+        height: 630,
+      },
+    ],
     type: "website",
   },
   verification: {
     google: "0KSBnChCi9dBPjm7kXBCBPQkXFRsK0liVofcTi_XNr8",
+  },
+  alternates: {
+    canonical: "https://hrishank.dev",
   },
 };
 
@@ -44,12 +67,31 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Hrishank Chhatbar",
+    alternateName: ["Hrishank", "Hrishank C", "Hrishankk"],
+    url: "https://hrishank.dev",
+    jobTitle: "Software Engineer",
+    sameAs: [
+      "https://github.com/Hrishank07",
+      "https://linkedin.com/in/hrishank-chhatbar",
+      // Add other social profiles here if available
+    ],
+    knowsAbout: ["Software Engineering", "Cloud Architecture", "AWS", "Next.js", "React", "Python"],
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${playfair.variable} ${inter.variable} ${jetbrains.variable} antialiased bg-background text-foreground font-sans`}
       >
         <ThemeWrapper>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
           {children}
         </ThemeWrapper>
       </body>
