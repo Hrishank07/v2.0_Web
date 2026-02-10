@@ -43,11 +43,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Hrishank Chhatbar - Software Engineer & Cloud Architect",
     description: "Building scalable systems that solve complex challenges",
-    url: "https://hrishank.dev",
+    url: "https://hrishankc.netlify.app",
     siteName: "Hrishank Chhatbar Portfolio",
     images: [
       {
-        url: "https://hrishank.dev/og-image.png", // Ensure you have an og-image
+        url: "https://hrishankc.netlify.app/og-image.png", // Ensure you have an og-image
         width: 1200,
         height: 630,
       },
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     google: "0KSBnChCi9dBPjm7kXBCBPQkXFRsK0liVofcTi_XNr8",
   },
   alternates: {
-    canonical: "https://hrishank.dev",
+    canonical: "https://hrishankc.netlify.app",
   },
 };
 
@@ -72,7 +72,7 @@ export default function RootLayout({
     "@type": "Person",
     name: "Hrishank Chhatbar",
     alternateName: ["Hrishank", "Hrishank C", "Hrishankk"],
-    url: "https://hrishank.dev",
+    url: "https://hrishankc.netlify.app",
     jobTitle: "Software Engineer",
     sameAs: [
       "https://github.com/Hrishank07",
