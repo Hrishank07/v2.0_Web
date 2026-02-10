@@ -1,12 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
-// ============================================
-// UPDATE YOUR RESEND API KEY HERE
-// ============================================
-const RESEND_API_KEY = 're_GfDgHeuS_9t69wo97b2ZCEk6axgkm1Hpq'  // actual API key
+const RESEND_API_KEY = process.env.RESEND_API_KEY
 const resend = new Resend(RESEND_API_KEY)
-// ============================================
 
 export async function POST(request: NextRequest) {
   try {
