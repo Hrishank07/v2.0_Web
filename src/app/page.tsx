@@ -1,17 +1,15 @@
-'use client'
-
 import { Header } from '@/components/header'
 import { HeroSection } from '@/components/hero'
 import { AboutSection } from '@/components/about-section'
 import { ProjectsSection } from '@/components/projects-section'
 import { ContactSection } from '@/components/contact-section'
 import { Footer } from '@/components/footer'
-import { ThreeBackground } from '@/components/three-background'
+import { DynamicThreeBackground } from '@/components/dynamic-background'
 
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
-      <ThreeBackground />
+      <DynamicThreeBackground />
       <Header />
       <main className="flex-1">
         <HeroSection />

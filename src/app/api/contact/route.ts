@@ -1,13 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
-const RESEND_API_KEY = process.env.RESEND_API_KEY
-
-// Initialize Resend safely - if key is missing (like during build), it stays undefined
-// The check inside POST will prevent runtime errors
-const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null
 
 export async function POST(request: NextRequest) {
+  const resend = new Resend(process.env.RESEND_API_KEY || 're_123')
   try {
     const body = await request.json()
     const { name, email, message } = body
@@ -21,7 +17,6 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate email format
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
       return NextResponse.json(
@@ -30,7 +25,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check if Resend is initialized (API Key present)
     if (!resend) {
       console.error('Missing RESEND_API_KEY')
       return NextResponse.json(
@@ -39,7 +33,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Log the contact form submission
     console.log('=== CONTACT FORM SUBMISSION ===')
     console.log(`Name: ${name}`)
     console.log(`Email: ${email}`)
@@ -47,7 +40,6 @@ export async function POST(request: NextRequest) {
     console.log(`Timestamp: ${new Date().toISOString()}`)
     console.log('================================')
 
-    // Send email using Resend
     try {
       const emailData = await resend.emails.send({
         from: 'Portfolio Contact <onboarding@resend.dev>', // Use this for testing, or your verified domain
