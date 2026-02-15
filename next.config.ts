@@ -2,7 +2,6 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   images: {
     unoptimized: true, // Recommended for static exports or simple Netlify setups if not using Next.js Image Optimization service
   },
