@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from 'react'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
+import { MotionConfig } from 'framer-motion'
 
 export function ThemeWrapper({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true)
   }, [])
 
@@ -22,7 +22,9 @@ export function ThemeWrapper({ children }: { children: React.ReactNode }) {
       enableSystem
       disableTransitionOnChange
     >
-      {children}
+      <MotionConfig reducedMotion="user">
+        {children}
+      </MotionConfig>
     </NextThemesProvider>
   )
 }

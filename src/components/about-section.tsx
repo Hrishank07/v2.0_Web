@@ -1,7 +1,7 @@
 'use client'
 
 import { Cloud, Code, Database, Brain, Zap, Award, Briefcase, CheckCircle2 } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 
 const skills = [
   {

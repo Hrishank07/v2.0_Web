@@ -1,8 +1,3 @@
-/**
- * Framer Motion mock for Jest.
- * Renders motion.* components as plain HTML elements, stripping framer-only props
- * so React doesn't warn about unknown DOM attributes.
- */
 import React from 'react'
 
 const MOTION_PROPS = new Set([
@@ -33,5 +28,13 @@ const motion = new Proxy({}, {
 const AnimatePresence = ({ children }: React.PropsWithChildren) =>
   React.createElement(React.Fragment, null, children)
 
-export { motion, AnimatePresence }
-export default { motion, AnimatePresence }
+const MotionConfig = ({ children }: React.PropsWithChildren) =>
+  React.createElement(React.Fragment, null, children)
+
+const useReducedMotion = () => false
+const useMotionValue = (initial: number) => ({ get: () => initial, set: () => {} })
+const useSpring = (value: unknown) => value
+const useTransform = () => ({ get: () => 0 })
+
+export { motion, AnimatePresence, MotionConfig, useReducedMotion, useMotionValue, useSpring, useTransform }
+export default { motion, AnimatePresence, MotionConfig, useReducedMotion }
