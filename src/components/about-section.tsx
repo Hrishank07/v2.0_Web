@@ -98,7 +98,7 @@ export function AboutSection() {
 
               <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
                 <p>
-                  Im a recent Masters graduate in Engineering Management from the University of Southern California (USC) with a minor in Business Analytics. My academic journey began at Maharashtra Institute of Technology where I graduated with a 3.97/4.0 GPA, establishing a strong foundation in electrical and computer engineering.
+                  I'm a recent Masters graduate in Engineering Management from the University of Southern California (USC) with a minor in Business Analytics. My academic journey began at Maharashtra Institute of Technology where I graduated with a 3.97/4.0 GPA, establishing a strong foundation in electrical and computer engineering.
                 </p>
 
                 <p>
@@ -106,11 +106,11 @@ export function AboutSection() {
                 </p>
 
                 <p>
-                  My passion lies at the intersection of cloud architecture and AI integration. Whether its designing serverless solutions that achieve microsecond-level latency or building full-stack applications powered by GPT and vector search, I thrive on solving complex problems. I believe the best engineers are those who can bridge the gap between technical excellence and user experience, creating solutions that are both powerful and intuitive.
+                  My passion lies at the intersection of cloud architecture and AI integration. Whether it's designing serverless solutions that achieve microsecond-level latency or building full-stack applications powered by GPT and vector search, I thrive on solving complex problems. I believe the best engineers are those who can bridge the gap between technical excellence and user experience, creating solutions that are both powerful and intuitive.
                 </p>
 
                 <p className="font-medium text-foreground pt-2 border-t border-border/50">
-                  Im now seeking my next opportunity to bring my skills in cloud architecture, full-stack development, and AI integration to a team where I can make meaningful contributions and continue growing as an engineer.
+                  I'm now seeking my next opportunity to bring my skills in cloud architecture, full-stack development, and AI integration to a team where I can make meaningful contributions and continue growing as an engineer.
                 </p>
               </div>
             </div>

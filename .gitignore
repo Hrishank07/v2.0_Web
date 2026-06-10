@@ -41,3 +41,13 @@ next-env.d.ts
 
 # logs
 *.log
+
+# dev output logs
+dev_output*.log
+
+# macOS duplicate folders
+public 2/
+
+# playwright
+/playwright-report/
+/test-results/
