@@ -37,4 +37,7 @@ const useSpring = (value: unknown) => value
 const useTransform = () => ({ get: () => 0 })
 
 export { motion, AnimatePresence, MotionConfig, useReducedMotion, useMotionValue, useSpring, useTransform }
-export default { motion, AnimatePresence, MotionConfig, useReducedMotion }
+
+
+const frameworkMotionMock = { motion, AnimatePresence, MotionConfig, useReducedMotion }
+export default frameworkMotionMock
