@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
+import { MotionConfig } from 'framer-motion'
 
 export function ThemeWrapper({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false)
@@ -22,7 +23,9 @@ export function ThemeWrapper({ children }: { children: React.ReactNode }) {
       enableSystem
       disableTransitionOnChange
     >
-      {children}
+      <MotionConfig reducedMotion="user">
+        {children}
+      </MotionConfig>
     </NextThemesProvider>
   )
 }

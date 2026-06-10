@@ -1,7 +1,7 @@
 'use client'
 
 import { Database, Bot, ExternalLink, GitBranch, Zap } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 
 const projects = [
   {

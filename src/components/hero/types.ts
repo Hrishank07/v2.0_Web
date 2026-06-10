@@ -1,7 +1,7 @@
-// Types for Hero Section components
+import type { LucideIcon } from 'lucide-react'
 
 export interface FloatingCardData {
-  icon: React.ComponentType<{ className?: string }>
+  icon: LucideIcon
   title: string
   description: string
   stat: string
@@ -14,7 +14,7 @@ export interface FloatingCardData {
 export interface StatData {
   value: string
   label: string
-  icon: React.ComponentType<{ className?: string }>
+  icon: LucideIcon
 }
 
 export interface DecryptState {
