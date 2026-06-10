@@ -78,6 +78,13 @@ export const metadata: Metadata = {
     ],
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hrishank Chhatbar - Software Engineer & Cloud Architect",
+    description: "Building scalable systems that solve complex challenges with AWS, Next.js, and AI.",
+    images: ["https://hrishankc.netlify.app/og-image.png"],
+    creator: "@Hrishank07", // Replace with your actual Twitter handle if different
+  },
   verification: {
     google: "0KSBnChCi9dBPjm7kXBCBPQkXFRsK0liVofcTi_XNr8",
   },
