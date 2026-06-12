@@ -1,7 +1,8 @@
 'use client'
 
-import { Database, Bot, ExternalLink, GitBranch, Zap } from 'lucide-react'
+import { Database, Bot, ExternalLink, GitBranch, Zap, type LucideIcon } from 'lucide-react'
 import { motion, useReducedMotion } from 'framer-motion'
+import { useState } from 'react'
 
 const projects = [
   {
@@ -76,8 +77,12 @@ function ProjectCard({
 }: {
   project: typeof projects[0]
   index: number
-  Icon: any
+  Icon: LucideIcon
 }) {
+  const [imgFailed, setImgFailed] = useState(false)
+  const repoPath = project.link.replace('https://github.com/', '')
+  const ogImage = `https://opengraph.githubassets.com/portfolio/${repoPath}`
+
   return (
     <motion.div
       className="group relative overflow-hidden rounded-2xl border border-border bg-card/80 shadow-md transition-all hover:-translate-y-2.5 hover:shadow-2xl dark:bg-card/80"
@@ -103,17 +108,30 @@ function ProjectCard({
             }} />
           </div>
 
-          {/* Icon container */}
-          <motion.div
-            className="relative flex h-20 w-20 items-center justify-center rounded-2xl bg-background shadow-lg"
-            whileHover={{ rotate: 5, scale: 1.1 }}
-            transition={{ type: 'spring', stiffness: 300 }}
-          >
-            <Icon
-              className={`h-10 w-10 transition-colors ${project.iconColor} group-hover:text-accent-primary`}
-              strokeWidth={1.5}
+          {/* GitHub repo preview, falls back to icon if it fails to load */}
+          {!imgFailed && (
+            <img
+              src={ogImage}
+              alt={`${project.title} GitHub repository preview`}
+              loading="lazy"
+              onError={() => setImgFailed(true)}
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
-          </motion.div>
+          )}
+
+          {/* Icon container (fallback) */}
+          {imgFailed && (
+            <motion.div
+              className="relative flex h-20 w-20 items-center justify-center rounded-2xl bg-background shadow-lg"
+              whileHover={{ rotate: 5, scale: 1.1 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              <Icon
+                className={`h-10 w-10 transition-colors ${project.iconColor} group-hover:text-accent-primary`}
+                strokeWidth={1.5}
+              />
+            </motion.div>
+          )}
 
           {/* External link indicator */}
           <motion.div

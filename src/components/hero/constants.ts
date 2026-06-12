@@ -39,13 +39,12 @@ export const floatingCards: FloatingCardData[] = [
 export const stats: StatData[] = [
   { value: '3.97', label: 'Undergrad GPA', icon: GraduationCap },
   { value: '3.9', label: 'Masters GPA', icon: GraduationCap },
-  { value: 'AWS', label: 'SDE Experience', icon: Building2 },
+  { value: 'AWS Lambda', label: 'SDE Intern, Seattle', icon: Building2 },
 ]
 
 // Animation constants
 export const ANIMATION_CONFIG = {
   typingSpeed: 70,
-  cursorBlinkSpeed: 400,
   decryptProgressStep: 2,
   decryptProgressDelay: 40,
   matrixUpdateInterval: 10,

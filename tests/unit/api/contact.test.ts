@@ -26,7 +26,8 @@ function makeRequest(body: Record<string, unknown>): NextRequest {
 
 beforeEach(() => {
   mockSend.mockReset()
-  mockSend.mockResolvedValue({ id: 'mock-id' })
+  // Matches real Resend v6 SDK shape: { data, error }
+  mockSend.mockResolvedValue({ data: { id: 'mock-id' }, error: null })
 })
 
 describe('POST /api/contact', () => {
@@ -74,8 +75,20 @@ describe('POST /api/contact', () => {
     )
   })
 
-  it('returns 500 when email sending throws', async () => {
-    mockSend.mockRejectedValue(new Error('Resend API error'))
+  it('returns 500 when Resend returns an error object (real SDK behavior — it does not throw)', async () => {
+    mockSend.mockResolvedValue({
+      data: null,
+      error: { name: 'validation_error', statusCode: 401, message: 'API key is invalid' },
+    })
+    const POST = await getRoute()
+    const res = await POST(makeRequest({ name: 'Alice', email: 'a@b.com', message: 'Hello!' }))
+    expect(res.status).toBe(500)
+    const body = await res.json()
+    expect(body.error).toMatch(/failed to send/i)
+  })
+
+  it('returns 500 when email sending throws unexpectedly', async () => {
+    mockSend.mockRejectedValue(new Error('network down'))
     const POST = await getRoute()
     const res = await POST(makeRequest({ name: 'Alice', email: 'a@b.com', message: 'Hello!' }))
     expect(res.status).toBe(500)

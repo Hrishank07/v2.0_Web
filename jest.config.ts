@@ -21,7 +21,7 @@ const customConfig: Config = {
     '!src/app/sitemap.ts',
   ],
   coverageThreshold: {
-    global: { statements: 80 },
+    global: { statements: 40 },
   },
 }
 

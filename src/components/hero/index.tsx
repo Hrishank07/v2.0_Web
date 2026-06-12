@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import { Terminal, ArrowRight } from 'lucide-react'
+import { Terminal, ArrowRight, FileText } from 'lucide-react'
 import Link from 'next/link'
 import { motion, useReducedMotion } from 'framer-motion'
 import { useTheme } from 'next-themes'
@@ -11,7 +11,6 @@ import { floatingCards, stats, ANIMATION_CONFIG } from './constants'
 
 export function HeroSection() {
   const [typedText, setTypedText] = useState('')
-  const [showCursor, setShowCursor] = useState(true)
   const hasAnimated = useRef(false)
   const { theme } = useTheme()
   const reduce = useReducedMotion()
@@ -36,18 +35,11 @@ export function HeroSection() {
       }
     }, ANIMATION_CONFIG.typingSpeed)
 
-    const cursorInterval = setInterval(() => {
-      setShowCursor(prev => !prev)
-    }, ANIMATION_CONFIG.cursorBlinkSpeed)
-
-    return () => {
-      clearInterval(typingInterval)
-      clearInterval(cursorInterval)
-    }
+    return () => clearInterval(typingInterval)
   }, [reduce])
 
   return (
-    <section id="home" className="relative flex min-h-[80vh] items-center py-16 md:py-20 overflow-hidden">
+    <section id="home" className="relative flex min-h-[80vh] min-h-[80svh] items-center py-16 md:py-20 overflow-hidden">
       <div className="container mx-auto px-5 relative z-10">
         <div className="flex flex-col md:flex-row md:items-center md:gap-16">
           <div className="flex-1 text-center md:text-left">
@@ -70,10 +62,9 @@ export function HeroSection() {
                     </span>
                     <span className="text-3xl md:text-5xl lg:text-6xl relative">
                       {typedText}
-                      <motion.span
-                        animate={reduce ? { opacity: 1 } : { opacity: showCursor ? 1 : 0 }}
-                        transition={t({ duration: 0.15 })}
-                        className="inline-block w-0.5 h-8 md:h-12 lg:h-16 bg-accent-primary ml-1 align-middle"
+                      <span
+                        aria-hidden="true"
+                        className="cursor-blink inline-block w-0.5 h-8 md:h-12 lg:h-16 bg-accent-primary ml-1 align-middle"
                       />
                     </span>
                     <span className="font-mono text-xl text-accent-primary md:text-4xl lg:text-5xl mt-1 md:mt-2">
@@ -140,6 +131,15 @@ export function HeroSection() {
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
               <DecryptButton />
+              <a
+                href="/resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 rounded-full border border-border px-5 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:border-accent-primary hover:text-accent-primary md:px-6 md:py-3"
+              >
+                <FileText className="h-4 w-4" />
+                View resume
+              </a>
             </motion.div>
           </div>
 

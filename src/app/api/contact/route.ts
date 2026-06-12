@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    await getResend().emails.send({
+    const { error: sendError } = await getResend().emails.send({
       from: 'Portfolio Contact <onboarding@resend.dev>',
       to: 'hchhatba@usc.edu',
       subject: `Portfolio Contact: ${escapeHtml(name)}`,
@@ -78,6 +78,12 @@ export async function POST(request: NextRequest) {
         </html>
       `,
     })
+
+    // Resend's SDK does not throw on API errors — it returns { data, error }
+    if (sendError) {
+      console.error('Resend send error:', sendError)
+      return NextResponse.json({ error: 'Failed to send message' }, { status: 500 })
+    }
 
     return NextResponse.json({ success: true, message: 'Message sent successfully' }, { status: 200 })
   } catch (error) {
