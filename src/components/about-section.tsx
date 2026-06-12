@@ -1,6 +1,6 @@
 'use client'
 
-import { Cloud, Code, Database, Brain, Zap, Award, Briefcase, CheckCircle2 } from 'lucide-react'
+import { Cloud, Code, Database, Brain, Zap, Award, Briefcase, CheckCircle2, type LucideIcon } from 'lucide-react'
 import { motion, useReducedMotion } from 'framer-motion'
 
 const skills = [
@@ -178,7 +178,7 @@ export function AboutSection() {
   )
 }
 
-function SkillCard({ skill, index, Icon }: { skill: typeof skills[0]; index: number; Icon: any }) {
+function SkillCard({ skill, index, Icon }: { skill: typeof skills[0]; index: number; Icon: LucideIcon }) {
   return (
     <motion.div
       className="group relative overflow-hidden rounded-2xl border border-border bg-card/95 p-6 text-center transition-all hover:-translate-y-1 hover:shadow-xl dark:bg-card/95"

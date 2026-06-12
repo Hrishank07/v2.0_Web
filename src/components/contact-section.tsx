@@ -113,22 +113,14 @@ export function ContactSection() {
               </div>
 
               <div className="flex items-center gap-3">
-                <motion.div
-                  animate={{ opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="flex items-center gap-1.5 text-xs text-muted-foreground"
-                >
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground dot-pulse" style={{ animationDuration: '2s' }}>
                   <Wifi className="h-3.5 w-3.5 text-accent-primary" />
                   <span className="font-mono">ONLINE</span>
-                </motion.div>
-                <motion.div
-                  animate={{ opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }}
-                  className="flex items-center gap-1.5 text-xs text-muted-foreground"
-                >
+                </div>
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground dot-pulse" style={{ animationDuration: '1.5s', animationDelay: '0.5s' }}>
                   <Server className="h-3.5 w-3.5 text-accent-primary" />
                   <span className="font-mono">ACTIVE</span>
-                </motion.div>
+                </div>
               </div>
             </div>
 
@@ -137,17 +129,18 @@ export function ContactSection() {
                 <p className="text-accent-primary">$</p>
                 <p className="text-muted-foreground ml-4">Welcome to the contact terminal. Please enter your message below.</p>
                 <p className="text-accent-primary">$</p>
-                <p className="text-muted-foreground ml-4"><span className="text-yellow-500">Tip:</span> All transmissions are encrypted end-to-end.</p>
+                <p className="text-muted-foreground ml-4"><span className="text-yellow-500">Tip:</span> All transmissions are sent securely over HTTPS.</p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4 mb-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="flex items-center gap-2 text-sm font-mono text-accent-primary">
+                    <label htmlFor="contact-name" className="flex items-center gap-2 text-sm font-mono text-accent-primary">
                       <Code2 className="h-4 w-4" />
                       <span>name =</span>
                     </label>
                     <input
+                      id="contact-name"
                       type="text"
                       required
                       value={formData.name}
@@ -157,11 +150,12 @@ export function ContactSection() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="flex items-center gap-2 text-sm font-mono text-accent-primary">
+                    <label htmlFor="contact-email" className="flex items-center gap-2 text-sm font-mono text-accent-primary">
                       <Mail className="h-4 w-4" />
                       <span>email =</span>
                     </label>
                     <input
+                      id="contact-email"
                       type="email"
                       required
                       value={formData.email}
@@ -173,11 +167,12 @@ export function ContactSection() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="flex items-center gap-2 text-sm font-mono text-accent-primary">
+                  <label htmlFor="contact-message" className="flex items-center gap-2 text-sm font-mono text-accent-primary">
                     <Terminal className="h-4 w-4" />
                     <span>message =</span>
                   </label>
                   <textarea
+                    id="contact-message"
                     required
                     value={formData.message}
                     onChange={handleInputChange('message')}
@@ -214,6 +209,8 @@ export function ContactSection() {
               <AnimatePresence>
                 {commandOutput.length > 0 && (
                   <motion.div
+                    role="status"
+                    aria-live="polite"
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
@@ -249,7 +246,7 @@ export function ContactSection() {
                     <span>linkedin</span>
                   </a>
                   <a
-                    href="https://github.com/hrishankk"
+                    href="https://github.com/Hrishank07"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 rounded-lg border border-border px-3 sm:px-4 py-2 text-sm font-mono text-foreground hover:border-accent-primary hover:text-accent-primary transition-all"
@@ -285,12 +282,10 @@ export function ContactSection() {
 
           <div className="mt-8 grid grid-cols-4 md:grid-cols-8 gap-2 opacity-30">
             {[...Array(32)].map((_, i) => (
-              <motion.div
+              <div
                 key={i}
-                className="h-2 w-2 rounded-full bg-accent-primary"
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: [0.3, 0.8, 0.3] }}
-                transition={{ duration: 2, repeat: Infinity, delay: i * 0.1, ease: 'easeInOut' }}
+                className="h-2 w-2 rounded-full bg-accent-primary dot-pulse"
+                style={{ animationDelay: `${i * 0.1}s` }}
               />
             ))}
           </div>

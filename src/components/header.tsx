@@ -6,9 +6,17 @@ import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
 import { Button } from './ui/button'
 
+const navLinks = [
+  { href: '#home', label: 'Home' },
+  { href: '#about', label: 'About' },
+  { href: '#projects', label: 'Projects' },
+  { href: '#contact', label: 'Contact' },
+]
+
 export function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('#home')
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,14 +26,27 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const navLinks = [
-    { href: '#home', label: 'Home' },
-    { href: '#about', label: 'About' },
-    { href: '#projects', label: 'Projects' },
-    { href: '#contact', label: 'Contact' },
-  ]
+  useEffect(() => {
+    const sections = navLinks
+      .map(link => document.querySelector(link.href))
+      .filter((el): el is Element => el !== null)
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveSection(`#${entry.target.id}`)
+          }
+        }
+      },
+      { rootMargin: '-40% 0px -55% 0px' }
+    )
+
+    sections.forEach(section => observer.observe(section))
+    return () => observer.disconnect()
+  }, [])
+
+  const handleNavClick = () => {
     setMobileMenuOpen(false)
   }
 
@@ -53,7 +74,12 @@ export function Header() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="relative font-medium text-sm lg:text-base text-foreground transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-0 after:bg-accent-primary after:transition-all after:duration-300 hover:text-foreground/80 hover:after:w-full dark:hover:text-foreground/80 dark:after:bg-accent-primary"
+                    aria-current={activeSection === link.href ? 'true' : undefined}
+                    className={`relative font-medium text-sm lg:text-base transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:bg-accent-primary after:transition-all after:duration-300 hover:text-foreground/80 hover:after:w-full dark:hover:text-foreground/80 dark:after:bg-accent-primary ${
+                      activeSection === link.href
+                        ? 'text-accent-primary after:w-full'
+                        : 'text-foreground after:w-0'
+                    }`}
                   >
                     {link.label}
                   </Link>
@@ -89,7 +115,7 @@ export function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  onClick={(e) => handleNavClick(e, link.href)}
+                  onClick={handleNavClick}
                   className="text-2xl font-medium text-foreground transition-colors hover:text-accent-primary"
                 >
                   {link.label}
